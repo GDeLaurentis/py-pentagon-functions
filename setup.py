@@ -1,6 +1,5 @@
 import subprocess
-import sys
-import pkg_resources
+import warnings
 
 from pathlib import Path
 
@@ -52,9 +51,14 @@ class MesonBuildExt(build_ext):
 
 # Check if 'with-cpp' was explicitly requested in the last pip call
 result = subprocess.run(['ps', 'aux'], stdout=subprocess.PIPE, text=True)
-result = result.stdout.splitlines()[-10:]
-result = [entry for entry in result if 'pip install' in entry][-1]
-with_cpp = 'with-cpp' in result
+result = result.stdout.splitlines()[-20:]
+print("Last invocations:",result)
+result = [entry for entry in result if 'pip install' in entry]
+if len(result) > 0:
+    with_cpp = 'with-cpp' in result
+else:
+    warnings.warn("Could not determine if with-cpp was requested, defaulting to True.")
+    with_cpp = True
 print("With cpp:", with_cpp)
 
 # Conditionally set cmdclass
