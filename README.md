@@ -24,6 +24,7 @@ pip install -e .[with-cpp]
 ## Quick Start
 
 ```python
+import numpy
 from lips import Particles
 from pentagon_functions import evaluate_pentagon_functions, fix_parity_odd
 

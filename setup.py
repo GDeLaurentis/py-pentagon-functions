@@ -21,6 +21,7 @@ class MesonBuildExt(build_ext):
         
         if (whichcraft.which("pentagon_functions_evaluator_python") is not None or
             Path("~/local/bin/pentagon_functions_evaluator_python").expanduser().exists()):
+            print("\nPentagonFunctions-cpp already found - skipping installation.")
             return
 
         repo_url = "https://gitlab.com/pentagon-functions/PentagonFunctions-cpp.git"

@@ -71,7 +71,7 @@ def make_hashable(func):
 @functools.lru_cache(maxsize=256)
 def evaluate_pentagon_functions(pentagon_monomials, phase_space_point,
                                 pentagon_function_set=["m0", "m1"][0], precision=["d", "q", "o"][0],
-                                number_of_cores=8, verbose=False):
+                                number_of_cores=8, verbose=True):
     """Calls PentagonFunctions++ via pyInterface.cpp"""
     assert precision in ["d", "q", "o"]
     assert pentagon_function_set in ["m0", "m1"]
@@ -99,20 +99,33 @@ def evaluate_pentagon_functions(pentagon_monomials, phase_space_point,
         )
         p1s, s12, s23, s34, s45, s15 = [mpmath.mpf(mandel.real) for mandel in [p1s, s12, s23, s34, s45, s15]]
     # call PentagonFunctions++ via pyInterface.cpp
-    PentagonFunctions_cppInterface = subprocess.Popen(
+    args = (
         [("" if script_directory is None else "./") + "pentagon_functions_evaluator_python"] +
-        [pentagon_function_set, precision, str(number_of_cores)],
-        stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+        [pentagon_function_set, precision, str(number_of_cores)]
+    )
+    if verbose:
+        print("Calling PentagonFunctions-cpp with args:", [
+            ("" if script_directory is None else "./") + "pentagon_functions_evaluator_python"] +
+            [pentagon_function_set, precision, str(number_of_cores)],
+            )
+    PentagonFunctions_cppInterface = subprocess.Popen(
+        args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
         cwd=script_directory)
     PentagonFunctions_cppInterface.stdin.write(pentagon_input_string.encode())
     if pentagon_function_set == "m0":
+        if verbose:
+            print(f"Passing kin info: {s12} {s23} {s34} {s45} {s15}")
         PentagonFunctions_cppInterface.stdin.write(f"{s12} {s23} {s34} {s45} {s15}".encode())
     elif pentagon_function_set == "m1":
+        if verbose:
+            print(f"Passing kin info: {p1s} {s12} {s23} {s34} {s45} {s15}")
         PentagonFunctions_cppInterface.stdin.write(f"{p1s} {s12} {s23} {s34} {s45} {s15}".encode())
     stdout, stderr = PentagonFunctions_cppInterface.communicate()
     stdout, stderr = stdout.decode(), stderr.decode()
     if verbose:
+        print("Output received from PentagonFunctions-cpp:")
         print(stdout)
+        print("Error received from PentagonFunctions-cpp:")
         print(stderr)
     if "Kinematical point is not in the physical region! Delta is >0" in stderr:
         raise ValueError("Kinematical point is not in the physical region! Delta is >0")
