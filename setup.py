@@ -70,6 +70,7 @@ cmdclass = {'build_ext': MesonBuildExt} if with_cpp else {}
 
 setup(
     name='pentagon_functions',
+    version=version,
     description='A Python interface to PentagonFunctions-cpp',
     long_description=long_description,
     long_description_content_type='text/markdown',
