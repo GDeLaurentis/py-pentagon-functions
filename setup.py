@@ -57,8 +57,8 @@ result = [entry for entry in result if 'pip install' in entry]
 if len(result) > 0:
     with_cpp = 'with-cpp' in result
 else:
-    warnings.warn("Could not determine if with-cpp was requested, defaulting to False.")
-    with_cpp = False
+    warnings.warn("Could not determine if with-cpp was requested, defaulting to False unless directly invoked.")
+    with_cpp = True if __name__ == "__main__" else False
 print("With cpp:", with_cpp)
 
 # Conditionally set cmdclass
