@@ -5,7 +5,7 @@ The following Python packages are required (automatically installed by pip)
 ```
 numpy, mpmath, lips, whichcraft
 ```
-The following C++ library is required, pip will attempt to install it automatically with the option `[with-cpp]` is provided
+The following C++ library is required, pip will attempt to install it automatically if `pentagon_functions_evaluator_python` is not found. To attempt this automatic installation pass `[with-cpp]` to ensure `ninja` and `meson` are present
 ```
 PentagonFunctions-cpp
 ```

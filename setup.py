@@ -1,5 +1,4 @@
 import subprocess
-import warnings
 
 from pathlib import Path
 
@@ -18,6 +17,11 @@ with (this_directory / "pentagon_functions" / "version.py").open() as f:
 
 class MesonBuildExt(build_ext):
     def run(self):
+        import whichcraft
+        
+        if (whichcraft.which("pentagon_functions_evaluator_python") is not None or
+            Path("~/local/bin/pentagon_functions_evaluator_python").expanduser().exists()):
+            return
 
         repo_url = "https://gitlab.com/pentagon-functions/PentagonFunctions-cpp.git"
         repo_dir = this_directory / "PentagonFunctions-cpp"
@@ -47,29 +51,16 @@ class MesonBuildExt(build_ext):
 
         # Run Ninja build inside build_dir
         print("\nRunning Ninja build:")
-        ninja_cmd = ['ninja', '-C', str(build_dir)]
-        subprocess.run(ninja_cmd, check=True, capture_output=False, text=True, cwd=build_dir)
+        subprocess.run(['ninja'], check=True, capture_output=False, text=True, cwd=build_dir)
 
         # Run Ninja install inside build_dir
         print("\nRunning Ninja install:")
-        install_cmd = ['ninja', '-C', str(build_dir), 'install']
-        subprocess.run(install_cmd, check=True, capture_output=False, text=True, cwd=build_dir)
+        subprocess.run(['ninja', 'install'], check=True, capture_output=False, text=True, cwd=build_dir)
 
 
-# Check if 'with-cpp' was explicitly requested in the last pip call
-result = subprocess.run(['ps', 'aux'], stdout=subprocess.PIPE, text=True)
-result = result.stdout.splitlines()[:]
-# print("Last invocations:",result)
-result = [entry for entry in result if 'pip install' in entry]
-if len(result) > 0:
-    with_cpp = 'with-cpp' in result
-else:
-    warnings.warn("Could not determine if with-cpp was requested, defaulting to False unless directly invoked.")
-    with_cpp = True if __name__ == "__main__" else False
-print("With cpp:", with_cpp)
-
-# Conditionally set cmdclass
-cmdclass = {'build_ext': MesonBuildExt} if with_cpp else {}
+# It appears to be hard to determine whether pip was called with any extra such as with-cpp
+# Instead decide whether to install cpp depending on whether the pentagon_functions_evaluator_python is visible.
+cmdclass = {'build_ext': MesonBuildExt}
 
 
 setup(
