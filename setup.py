@@ -6,10 +6,14 @@ from pathlib import Path
 from setuptools import setup, find_packages
 from setuptools.command.build_ext import build_ext
 
-from version import __version__ as version
 
 this_directory = Path(__file__).parent
 long_description = (this_directory / "README.md").read_text()
+
+
+with (this_directory / "pentagon_functions" / "version.py").open() as f:
+    exec(f.read())
+    version = __version__  # noqa
 
 
 class MesonBuildExt(build_ext):
@@ -75,6 +79,13 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     author='Giuseppe De Laurentis and the Pentagon Functions authors',
+    url='https://github.com/GDeLaurentis/py-pentagon-functions',
+    download_url=f'https://github.com/GDeLaurentis/py-pentagon-functions/archive/v{version}.tar.gz',
+    project_urls={
+#        'Documentation': 'https://gdelaurentis.github.io/py-pentagon-functions/',
+        'Issues': 'https://github.com/GDeLaurentis/py-pentagon-functions/issues',
+    },
+    keywords=['Scattering Amplitudes', 'Feynman Integrals', 'Pentagon Functions'],
     packages=find_packages(),
     include_package_data=True,
     install_requires=['numpy',
