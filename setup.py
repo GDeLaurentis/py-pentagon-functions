@@ -51,8 +51,8 @@ class MesonBuildExt(build_ext):
 
 # Check if 'with-cpp' was explicitly requested in the last pip call
 result = subprocess.run(['ps', 'aux'], stdout=subprocess.PIPE, text=True)
-result = result.stdout.splitlines()[-20:]
-print("Last invocations:",result)
+result = result.stdout.splitlines()[:]
+# print("Last invocations:",result)
 result = [entry for entry in result if 'pip install' in entry]
 if len(result) > 0:
     with_cpp = 'with-cpp' in result
