@@ -6,7 +6,10 @@ from pathlib import Path
 from setuptools import setup, find_packages
 from setuptools.command.build_ext import build_ext
 
+from version import __version__ as version
+
 this_directory = Path(__file__).parent
+long_description = (this_directory / "README.md").read_text()
 
 
 class MesonBuildExt(build_ext):
@@ -67,8 +70,10 @@ cmdclass = {'build_ext': MesonBuildExt} if with_cpp else {}
 
 setup(
     name='pentagon_functions',
-    version='v0.0.1',
-    author='Giuseppe De Laurentis, and the Pentagon Functions authors',
+    description='A Python interface to PentagonFunctions-cpp',
+    long_description=long_description,
+    long_description_content_type='text/markdown',
+    author='Giuseppe De Laurentis and the Pentagon Functions authors',
     packages=find_packages(),
     include_package_data=True,
     install_requires=['numpy',
@@ -79,4 +84,13 @@ setup(
         'with-cpp': ['meson', 'ninja']
     },
     cmdclass=cmdclass,
+    classifiers=[
+        'Development Status :: 4 - Beta',
+        'Intended Audience :: Science/Research',
+        'Topic :: Scientific/Engineering :: Physics',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
+    ],
 )
