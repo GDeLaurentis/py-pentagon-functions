@@ -71,7 +71,7 @@ def make_hashable(func):
 @functools.lru_cache(maxsize=256)
 def evaluate_pentagon_functions(pentagon_monomials, phase_space_point,
                                 pentagon_function_set=["m0", "m1"][0], precision=["d", "q", "o"][0],
-                                number_of_cores=8, verbose=True):
+                                number_of_cores=8, verbose=False):
     """Calls PentagonFunctions++ via pyInterface.cpp"""
     assert precision in ["d", "q", "o"]
     assert pentagon_function_set in ["m0", "m1"]
