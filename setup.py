@@ -1,3 +1,4 @@
+import os
 import subprocess
 
 from pathlib import Path
@@ -50,9 +51,12 @@ class MesonBuildExt(build_ext):
         else:
             print("\nMeson setup already complete; skipping reconfiguration.")
 
-        # Run Ninja build inside build_dir
-        print("\nRunning Ninja build:")
-        subprocess.run(['ninja'], check=True, capture_output=False, text=True, cwd=build_dir)
+        # Get the number of cores from the environment (or default to 1 if not set)
+        num_cores = os.environ.get("NINJA_CORES", "1")  # Default to 1 if not provided
+
+        # Run Ninja build inside build_dir with the number of cores
+        print(f"\nRunning Ninja build with {num_cores} cores:")
+        subprocess.run(['ninja', f'-j{num_cores}'], check=True, capture_output=False, text=True, cwd=build_dir)
 
         # Run Ninja install inside build_dir
         print("\nRunning Ninja install:")
