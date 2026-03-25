@@ -19,9 +19,9 @@ with (this_directory / "pentagon_functions" / "version.py").open() as f:
 class MesonBuildExt(build_ext):
     def run(self):
         import whichcraft
-        
+
         if (whichcraft.which("pentagon_functions_evaluator_python") is not None or
-            Path("~/local/bin/pentagon_functions_evaluator_python").expanduser().exists()):
+           Path("~/local/bin/pentagon_functions_evaluator_python").expanduser().exists()):
             print("\nPentagonFunctions-cpp already found - skipping installation.")
             return
 
@@ -40,7 +40,7 @@ class MesonBuildExt(build_ext):
             subprocess.run(["git", "-C", str(repo_dir), "pull"], check=True)
 
         # Create the build directory if it doesn't exist
-        build_dir.mkdir(parents=True, exist_ok=True)    
+        build_dir.mkdir(parents=True, exist_ok=True)
 
         # Check if Meson is already configured in build_dir
         if not (build_dir / 'meson-private').exists():
@@ -78,7 +78,7 @@ setup(
     url='https://github.com/GDeLaurentis/py-pentagon-functions',
     download_url=f'https://github.com/GDeLaurentis/py-pentagon-functions/archive/v{version}.tar.gz',
     project_urls={
-#        'Documentation': 'https://gdelaurentis.github.io/py-pentagon-functions/',
+        # 'Documentation': 'https://gdelaurentis.github.io/py-pentagon-functions/',
         'Issues': 'https://github.com/GDeLaurentis/py-pentagon-functions/issues',
     },
     keywords=['Scattering Amplitudes', 'Feynman Integrals', 'Pentagon Functions'],

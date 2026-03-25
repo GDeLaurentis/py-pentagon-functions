@@ -15,7 +15,7 @@ if whichcraft.which("pentagon_functions_evaluator_python") is None:
     if pathlib.Path("~/local/bin/pentagon_functions_evaluator_python").expanduser().exists():
         script_directory = str(pathlib.Path("~/local/bin").expanduser())
     else:
-        warnings.warn("Couldn't locate pentagon_functions_evaluator_python! Won't be able to evaluate pentagon functions")    
+        warnings.warn("Couldn't locate pentagon_functions_evaluator_python! Won't be able to evaluate pentagon functions")
 
 
 # Constant data
@@ -107,7 +107,7 @@ def evaluate_pentagon_functions(pentagon_monomials, phase_space_point,
         print("Calling PentagonFunctions-cpp with args:", [
             ("" if script_directory is None else "./") + "pentagon_functions_evaluator_python"] +
             [pentagon_function_set, precision, str(number_of_cores)],
-            )
+        )
     PentagonFunctions_cppInterface = subprocess.Popen(
         args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
         cwd=script_directory)
@@ -140,10 +140,44 @@ def evaluate_pentagon_functions(pentagon_monomials, phase_space_point,
     elif pentagon_function_set == "m1":
         numerical_pentagon_dict = {**numerical_pentagon_dict, **{
             "im[1,1]": 1j * mpmath.pi, "re[3,1]": mpmath.zeta(3)}, **{'1': 1}, **{
-            "one_over_sqrtG3[1]": 1 / mpmath.sqrt(p1s ** 2 + (s23 - s45) ** 2 - 2 * p1s * (s23 + s45)),
-            "one_over_sqrtG3[2]": 1 / mpmath.sqrt(p1s ** 2 + (s12 - s15 + s23 - s45) ** 2 - 2 * p1s * (s12 + s15 - s23 - 2 * s34 - s45)),
-            "one_over_sqrtG3[3]": 1 / mpmath.sqrt(s12 ** 2 + 2 * s12 * s15 + s15 ** 2 - 4 * p1s * s34),
-            "-str5": -mpmath.sign(phase_space_point("tr5_3456").imag)}
+                "one_over_sqrtG3[1]": 1 / mpmath.sqrt(p1s ** 2 + (s23 - s45) ** 2 - 2 * p1s * (s23 + s45)),
+                "one_over_sqrtG3[2]": 1 / mpmath.sqrt(p1s ** 2 + (s12 - s15 + s23 - s45) ** 2 - 2 * p1s * (s12 + s15 - s23 - 2 * s34 - s45)),
+                "one_over_sqrtG3[3]": 1 / mpmath.sqrt(s12 ** 2 + 2 * s12 * s15 + s15 ** 2 - 4 * p1s * s34),
+                "one_over_sqrtSigma5[1]": 1 / mpmath.sqrt(
+                    s12 ** 2 * (s15 - s23) ** 2 + (s23 * s34 + (s15 - s34) * s45) ** 2 + 2 * s12 * (
+                        -(s15 ** 2 * s45) + s15 * s34 * s45 + s23 * s34 * (-s23 + s45) + s15 * s23 * (s34 + s45)
+                    )
+                ),
+                "one_over_sqrtSigma5[2]": 1 / mpmath.sqrt(
+                    s12 ** 2 * (s15 - s23) ** 2 + p1s ** 2 * (s12 - s45) ** 2 + (s23 * s34 + (s15 - s34) * s45) ** 2 - 2 * p1s * (
+                        s12 ** 2 * (s15 - s23) + s23 * s34 * s45 + s12 * (-2 * s15 + s34) * s45 + (s15 - s34) * s45 ** 2 + s12 * s23 * (s34 + s45)
+                    ) + 2 * s12 * (-(s15 ** 2 * s45) + s15 * s34 * s45 + s23 * s34 * (-s23 + s45) + s15 * s23 * (s34 + s45))
+                ),
+                "one_over_sqrtSigma5[3]": 1 / mpmath.sqrt(
+                    s12 ** 2 * (s15 - s23) ** 2 + (s23 * s34 + (s15 - s34) * s45 - p1s * (s34 + s45)) ** 2 - 2 * s12 * (
+                        s23 * s34 * (s23 - s45) + s15 ** 2 * s45 + p1s * (-(s23 * s34) + s15 * (s34 - s45) + s23 * s45 + 2 * s34 * s45) -
+                        s15 * (s34 * s45 + s23 * (s34 + s45))
+                    )
+                ),
+                "one_over_sqrtSigma5[4]": 1 / mpmath.sqrt(
+                    p1s ** 2 * (s15 - s23) ** 2 + s12 ** 2 * (s15 - s23) ** 2 + (s23 * s34 + (s15 - s34) * s45) ** 2 + 2 * s12 * (
+                        -(s15 ** 2 * s45) + s15 * s34 * s45 + s23 * s34 * (-s23 + s45) + s15 * s23 * (s34 + s45)
+                    ) - 2 * p1s * (s12 * (s15 - s23) ** 2 - s15 ** 2 * s45 + s15 * s34 * s45 + s23 * s34 * (-s23 + s45) + s15 * s23 * (s34 + s45))
+                ),
+                "one_over_sqrtSigma5[5]": 1 / mpmath.sqrt(
+                    p1s ** 4 - 2 * p1s ** 3 * (s12 + s15) + s12 ** 2 * (s15 - s23) ** 2 + (s23 * s34 + (s15 - s34) * s45) ** 2 - 2 * p1s * (s12 + s15) *
+                    (s12 * (s15 - s23) + s23 * s34 - s15 * s45 + 2 * s23 * s45 + s34 * s45) + p1s ** 2 * (
+                        s12 ** 2 + 4 * s12 * s15 + s15 ** 2 - 2 * s12 * s23 + 2 * s23 * s34 - 2 * s15 * s45 + 4 * s23 * s45 + 2 * s34 * s45) +
+                    2 * s12 * (-(s15 ** 2 * s45) + s15 * s34 * s45 + s23 * s34 * (-s23 + s45) + s15 * s23 * (s34 + s45))
+                ),
+                "one_over_sqrtSigma5[6]": 1 / mpmath.sqrt(
+                    s12 ** 2 * (s15 - s23) ** 2 + p1s ** 2 * (s23 + s34) ** 2 + (s23 * s34 + (s15 - s34) * s45) ** 2 + 2 * s12 * (
+                        p1s * s15 * (s23 - s34) - p1s * s23 * (s23 + s34) - s15 ** 2 * s45 + s15 * s34 * s45 + s23 * s34 * (-s23 + s45) + s15 * s23 * (s34 + s45)) +
+                    2 * p1s * (s34 * (s23 + s34) * (s23 - s45) + s15 * s34 * s45 - s15 * s23 * (2 * s34 + s45))
+                ),
+                "-str5": -mpmath.sign(phase_space_point("tr5_3456").imag),
+                "str5": mpmath.sign(phase_space_point("tr5_3456").imag),
+        }
         }
     return numerical_pentagon_dict
 
@@ -160,7 +194,7 @@ def fix_parity_odd(numerical_pentagon_dict, phase_space_point, verbose=False):
         # flip odd F's
         for weight, l_odd_pentagon_indices in enumerate(oddFs):
             for odd_pentagon_indices in l_odd_pentagon_indices:
-                function_name = f'F[{weight+1},' + ','.join(map(str, odd_pentagon_indices)) + ']'
+                function_name = f'F[{weight + 1},' + ','.join(map(str, odd_pentagon_indices)) + ']'
                 if function_name in numerical_pentagon_dict.keys():
                     numerical_pentagon_dict[function_name] = -numerical_pentagon_dict[function_name]
         # flip odd tci's
@@ -168,7 +202,7 @@ def fix_parity_odd(numerical_pentagon_dict, phase_space_point, verbose=False):
             print("Flipping tci's")
         for weight, l_odd_pentagon_indices in enumerate(oddtcis):
             for odd_pentagon_index in l_odd_pentagon_indices:
-                function_name = f'tci[{weight+1},{odd_pentagon_index}]'
+                function_name = f'tci[{weight + 1},{odd_pentagon_index}]'
                 if function_name in numerical_pentagon_dict.keys():
                     numerical_pentagon_dict[function_name] = -numerical_pentagon_dict[function_name]
     return numerical_pentagon_dict

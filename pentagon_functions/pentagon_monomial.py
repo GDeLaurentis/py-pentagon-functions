@@ -24,8 +24,8 @@ class PentagonMonomial(FrozenMultiset):
     def __rstr__(monomial):
         if monomial == '' or monomial == '1':
             return dict()
-        monomial = monomial.replace("/sqrtG3[1]", "*one_over_sqrtG3[1]").replace("/sqrtG3[2]", "*one_over_sqrtG3[2]")
-        monomial = monomial.replace("/sqrtG3[3]", "*one_over_sqrtG3[3]").replace("(", "").replace(")", "")
+        monomial = re.sub(r'/sqrt([A-Za-z0-9_]+\[[^\]]+\])', r'*one_over_sqrt\1', monomial)
+        monomial = monomial.replace("(", "").replace(")", "")
         factors = monomial.split('*')
         factor_groups = defaultdict(list)
         for factor in factors:
