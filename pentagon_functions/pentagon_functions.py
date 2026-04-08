@@ -69,7 +69,7 @@ def make_hashable(func):
 
 @make_hashable
 @functools.lru_cache(maxsize=256)
-def evaluate_pentagon_functions(pentagon_monomials, phase_space_point,
+def evaluate_pentagon_functions(pentagon_monomials, phase_space_point, mu2=1,
                                 pentagon_function_set=["m0", "m1"][0], precision=["d", "q", "o"][0],
                                 number_of_cores=8, verbose=False):
     """Calls PentagonFunctions++ via pyInterface.cpp"""
@@ -89,7 +89,10 @@ def evaluate_pentagon_functions(pentagon_monomials, phase_space_point,
     pentagon_input_string = ";".join(pentagon_monomials_as_indices).replace("{", "").replace("}", "").replace(",", " ") + ";E"
     # build mandelstams - drop imaginary part, it should be numerically small, if at all present
     if pentagon_function_set == "m0":
-        s12, s23, s34, s45, s15 = phase_space_point("s12"), phase_space_point("s23"), phase_space_point("s34"), phase_space_point("s45"), phase_space_point("s15")
+        s12, s23, s34, s45, s15 = (
+            phase_space_point("s12"), phase_space_point("s23"), phase_space_point("s34"),
+            phase_space_point("s45"), phase_space_point("s15"),
+        )
         s12, s23, s34, s45, s15 = [mpmath.mpf(mandel.real) for mandel in [s12, s23, s34, s45, s15]]
     elif pentagon_function_set == "m1":
         # LHV: five point 1-mass notation with p1^2 != 0, RHS: six-point massless notation with p1 -> p1 + p2, p2 -> p3, etc..
@@ -114,12 +117,12 @@ def evaluate_pentagon_functions(pentagon_monomials, phase_space_point,
     PentagonFunctions_cppInterface.stdin.write(pentagon_input_string.encode())
     if pentagon_function_set == "m0":
         if verbose:
-            print(f"Passing kin info: {s12} {s23} {s34} {s45} {s15}")
-        PentagonFunctions_cppInterface.stdin.write(f"{s12} {s23} {s34} {s45} {s15}".encode())
+            print(f"Passing kin info: {s12 / mu2} {s23 / mu2} {s34 / mu2} {s45 / mu2} {s15 / mu2}")
+        PentagonFunctions_cppInterface.stdin.write(f"{s12 / mu2} {s23 / mu2} {s34 / mu2} {s45 / mu2} {s15 / mu2}".encode())
     elif pentagon_function_set == "m1":
         if verbose:
-            print(f"Passing kin info: {p1s} {s12} {s23} {s34} {s45} {s15}")
-        PentagonFunctions_cppInterface.stdin.write(f"{p1s} {s12} {s23} {s34} {s45} {s15}".encode())
+            print(f"Passing kin info: {p1s / mu2} {s12 / mu2} {s23 / mu2} {s34 / mu2} {s45 / mu2} {s15 / mu2}")
+        PentagonFunctions_cppInterface.stdin.write(f"{p1s / mu2} {s12 / mu2} {s23 / mu2} {s34 / mu2} {s45 / mu2} {s15 / mu2}".encode())
     stdout, stderr = PentagonFunctions_cppInterface.communicate()
     stdout, stderr = stdout.decode(), stderr.decode()
     if verbose:
