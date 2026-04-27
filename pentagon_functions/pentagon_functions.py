@@ -143,37 +143,37 @@ def evaluate_pentagon_functions(pentagon_monomials, phase_space_point, mu2=1,
     elif pentagon_function_set == "m1":
         numerical_pentagon_dict = {**numerical_pentagon_dict, **{
             "im[1,1]": 1j * mpmath.pi, "re[3,1]": mpmath.zeta(3)}, **{'1': 1}, **{
-                "one_over_sqrtG3[1]": 1 / mpmath.sqrt(p1s ** 2 + (s23 - s45) ** 2 - 2 * p1s * (s23 + s45)),
-                "one_over_sqrtG3[2]": 1 / mpmath.sqrt(p1s ** 2 + (s12 - s15 + s23 - s45) ** 2 - 2 * p1s * (s12 + s15 - s23 - 2 * s34 - s45)),
-                "one_over_sqrtG3[3]": 1 / mpmath.sqrt(s12 ** 2 + 2 * s12 * s15 + s15 ** 2 - 4 * p1s * s34),
-                "one_over_sqrtSigma5[1]": 1 / mpmath.sqrt(
+                "sqrtG3[1]": mpmath.sqrt(p1s ** 2 + (s23 - s45) ** 2 - 2 * p1s * (s23 + s45)),
+                "sqrtG3[2]": mpmath.sqrt(p1s ** 2 + (s12 - s15 + s23 - s45) ** 2 - 2 * p1s * (s12 + s15 - s23 - 2 * s34 - s45)),
+                "sqrtG3[3]": mpmath.sqrt(s12 ** 2 + 2 * s12 * s15 + s15 ** 2 - 4 * p1s * s34),
+                "sqrtSigma5[1]": mpmath.sqrt(
                     s12 ** 2 * (s15 - s23) ** 2 + (s23 * s34 + (s15 - s34) * s45) ** 2 + 2 * s12 * (
                         -(s15 ** 2 * s45) + s15 * s34 * s45 + s23 * s34 * (-s23 + s45) + s15 * s23 * (s34 + s45)
                     )
                 ),
-                "one_over_sqrtSigma5[2]": 1 / mpmath.sqrt(
+                "sqrtSigma5[2]": mpmath.sqrt(
                     s12 ** 2 * (s15 - s23) ** 2 + p1s ** 2 * (s12 - s45) ** 2 + (s23 * s34 + (s15 - s34) * s45) ** 2 - 2 * p1s * (
                         s12 ** 2 * (s15 - s23) + s23 * s34 * s45 + s12 * (-2 * s15 + s34) * s45 + (s15 - s34) * s45 ** 2 + s12 * s23 * (s34 + s45)
                     ) + 2 * s12 * (-(s15 ** 2 * s45) + s15 * s34 * s45 + s23 * s34 * (-s23 + s45) + s15 * s23 * (s34 + s45))
                 ),
-                "one_over_sqrtSigma5[3]": 1 / mpmath.sqrt(
+                "sqrtSigma5[3]": mpmath.sqrt(
                     s12 ** 2 * (s15 - s23) ** 2 + (s23 * s34 + (s15 - s34) * s45 - p1s * (s34 + s45)) ** 2 - 2 * s12 * (
                         s23 * s34 * (s23 - s45) + s15 ** 2 * s45 + p1s * (-(s23 * s34) + s15 * (s34 - s45) + s23 * s45 + 2 * s34 * s45) -
                         s15 * (s34 * s45 + s23 * (s34 + s45))
                     )
                 ),
-                "one_over_sqrtSigma5[4]": 1 / mpmath.sqrt(
+                "sqrtSigma5[4]": mpmath.sqrt(
                     p1s ** 2 * (s15 - s23) ** 2 + s12 ** 2 * (s15 - s23) ** 2 + (s23 * s34 + (s15 - s34) * s45) ** 2 + 2 * s12 * (
                         -(s15 ** 2 * s45) + s15 * s34 * s45 + s23 * s34 * (-s23 + s45) + s15 * s23 * (s34 + s45)
                     ) - 2 * p1s * (s12 * (s15 - s23) ** 2 - s15 ** 2 * s45 + s15 * s34 * s45 + s23 * s34 * (-s23 + s45) + s15 * s23 * (s34 + s45))
                 ),
-                "one_over_sqrtSigma5[5]": 1 / mpmath.sqrt(
+                "sqrtSigma5[5]": mpmath.sqrt(
                     p1s ** 4 - 2 * p1s ** 3 * (s12 + s15) + s12 ** 2 * (s15 - s23) ** 2 + (s23 * s34 + (s15 - s34) * s45) ** 2 - 2 * p1s * (s12 + s15) *
                     (s12 * (s15 - s23) + s23 * s34 - s15 * s45 + 2 * s23 * s45 + s34 * s45) + p1s ** 2 * (
                         s12 ** 2 + 4 * s12 * s15 + s15 ** 2 - 2 * s12 * s23 + 2 * s23 * s34 - 2 * s15 * s45 + 4 * s23 * s45 + 2 * s34 * s45) +
                     2 * s12 * (-(s15 ** 2 * s45) + s15 * s34 * s45 + s23 * s34 * (-s23 + s45) + s15 * s23 * (s34 + s45))
                 ),
-                "one_over_sqrtSigma5[6]": 1 / mpmath.sqrt(
+                "sqrtSigma5[6]": mpmath.sqrt(
                     s12 ** 2 * (s15 - s23) ** 2 + p1s ** 2 * (s23 + s34) ** 2 + (s23 * s34 + (s15 - s34) * s45) ** 2 + 2 * s12 * (
                         p1s * s15 * (s23 - s34) - p1s * s23 * (s23 + s34) - s15 ** 2 * s45 + s15 * s34 * s45 + s23 * s34 * (-s23 + s45) + s15 * s23 * (s34 + s45)) +
                     2 * p1s * (s34 * (s23 + s34) * (s23 - s45) + s15 * s34 * s45 - s15 * s23 * (2 * s34 + s45))
@@ -182,6 +182,9 @@ def evaluate_pentagon_functions(pentagon_monomials, phase_space_point, mu2=1,
                 "str5": mpmath.sign(phase_space_point("tr5_3456").imag),
         }
         }
+    for key, value in list(numerical_pentagon_dict.items()):
+        if key.startswith("sqrt"):
+            numerical_pentagon_dict[f"one_over_{key}"] = 1 / value
     return numerical_pentagon_dict
 
 
