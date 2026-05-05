@@ -5,8 +5,10 @@ import re
 from collections import defaultdict
 from multiset import FrozenMultiset
 
+from syngular import Monomial
 
-class PentagonMonomial(FrozenMultiset):
+
+class PentagonMonomial(Monomial):
 
     def __init__(self, pentagons_and_powers={}):
         if isinstance(pentagons_and_powers, (dict, tuple, FrozenMultiset, PentagonMonomial)):
