@@ -51,7 +51,8 @@ class PentagonMonomial(Monomial):
 
     @property
     def weight(self):
-        return sum([int(re.findall(r"\[(\d+)", key)[0]) * val if re.findall(r"\[(\d+)", key) != [] else 0
+        return sum([int(re.findall(r"\[(\d+)", key)[0]) * val if re.findall(r"\[(\d+)", key) != [] else
+                    1 * val if key == 'Pi' else 3 * val if key == 'zeta3' else 0
                     for key, val in self.items()])
 
     def subs(self, pentagons_dict):
